@@ -1,0 +1,15 @@
+{
+  "name": "Colubrine",
+  "description": "A simple app to save notes, really.",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  },
+  "icons": {
+    "16": "build/icon-16.png",
+    "128": "build/icon-128.png"
+  }
+}
