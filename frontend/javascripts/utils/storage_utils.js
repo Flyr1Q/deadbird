@@ -1,4 +1,3 @@
-import uuid from 'node-uuid';
 import ServerActionCreators from '../actions/server_action_creators.js';
 import db from './indexeddb_utils.js';
 
@@ -9,22 +8,10 @@ export default {
     })
   },
 
-  loadNote: function(id) {
-    db.get('note', id, function(note) {
-      ServerActionCreators.receiveNote(note);
+  updateNote: function(data) {
+    db.update('note', data, function(note) {
+      ServerActionCreators.receiveUpdatedNote(note, null);
     })
-  },
-
-  createNote: function(data) {
-    data.id = uuid();
-
-    db.create('note', data, function(note) {
-      ServerActionCreators.receiveCreatedNote(note, null);
-    })
-  },
-
-  updateNote: function(id, data) {
-    // implement this later
   },
 
   deleteNote: function(id) {

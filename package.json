@@ -31,9 +31,11 @@
   "dependencies": {
     "flux": "^2.1.1",
     "keymirror": "^0.1.1",
+    "lodash": "^3.10.1",
     "node-uuid": "^1.4.3",
     "object-assign": "^4.0.1",
     "react": "^0.13.3",
-    "react-router": "^0.13.3"
+    "react-router": "^0.13.3",
+    "shallow-copy": "0.0.1"
   }
 }

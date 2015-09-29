@@ -5,38 +5,28 @@ import { ActionTypes } from '../constants/constants.js';
 import StorageUtils from '../utils/storage_utils.js';
 
 export default {
-  loadNotes: function(query) {
+  loadNotes: function() {
     Dispatcher.handleViewAction({
       type: ActionTypes.LOAD_NOTES
     });
 
-    StorageUtils.loadNotes(query);
+    StorageUtils.loadNotes();
   },
 
-  loadNote: function(noteId) {
-    Dispatcher.handleViewAction({
-      type: ActionTypes.LOAD_NOTE,
-      noteId: noteId
+  changeNote: function(data) {
+    Dispatcher.handleServerAction({
+      type: ActionTypes.CHANGE_NOTE,
+      data: data
     });
-
-    StorageUtils.loadNote(noteId);
   },
 
-  createNote: function() {
+  updateNote: function(data) {
     Dispatcher.handleViewAction({
-      type: ActionTypes.CREATE_NOTE
-    });
-
-    StorageUtils.createNote();
-  },
-
-  updateNote: function(noteId, data) {
-    Dispatcher.handleViewAction(assign(data, {
       type: ActionTypes.UPDATE_NOTE,
-      noteId: noteId
-    }));
+      data: data
+    });
 
-    StorageUtils.updateNote(noteId, data);
+    StorageUtils.updateNote(data);
   },
 
   deleteNote: function(noteId) {

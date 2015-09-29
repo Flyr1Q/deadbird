@@ -9,21 +9,6 @@ export default {
     });
   },
 
-  receiveNote: function(data) {
-    Dispatcher.handleServerAction({
-      type: ActionTypes.RECEIVE_NOTE,
-      data: data
-    });
-  },
-
-  receiveCreatedNote: function(data, errors) {
-    Dispatcher.handleServerAction({
-      type: ActionTypes.RECEIVE_CREATED_NOTE,
-      data: data,
-      errors: errors
-    });
-  },
-
   receiveUpdatedNote: function(data, errors) {
     Dispatcher.handleServerAction({
       type: ActionTypes.RECEIVE_UPDATED_NOTE,

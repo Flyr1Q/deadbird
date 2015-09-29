@@ -1,0 +1,19 @@
+{
+  "name": "colubrine",
+  "version": "0.0.1",
+  "authors": [
+    "Flyr1Q <esimovmiras@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "build/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "normalize.css": "~3.0.3"
+  }
+}

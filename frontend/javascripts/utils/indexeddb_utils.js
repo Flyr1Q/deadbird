@@ -42,7 +42,7 @@ export default {
     var keyRange = IDBKeyRange.lowerBound(0);
     var cursorRequest = objStore.openCursor(keyRange);
 
-    var _instances = [];
+    var _instances = {};
 
     transaction.oncomplete = function(e) {
       callback(_instances);
@@ -55,7 +55,7 @@ export default {
         return;
       }
 
-      _instances.push(result.value);
+      _instances[result.value.id] = result.value
 
       result.continue();
     };
@@ -63,27 +63,7 @@ export default {
     cursorRequest.onerror = onerror;
   },
 
-  get: function(tableName, id, callback) {
-    var db = datastore;
-    var transaction = db.transaction([tableName], 'readonly');
-    var objStore = transaction.objectStore(tableName);
-
-    var request = objStore.get(id);
-
-    request.onsuccess = function(e) {
-      var result = e.target.result;
-
-      if(!!result == false) {
-        return;
-      }
-
-      callback(result.value);
-    }
-
-    request.onerror = onerror;
-  },
-
-  create: function(tableName, data, callback) {
+  update: function(tableName, data, callback) {
     var db = datastore;
     var transaction = db.transaction([tableName], 'readwrite');
     var objStore = transaction.objectStore(tableName);
