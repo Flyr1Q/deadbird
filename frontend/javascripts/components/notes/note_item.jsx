@@ -35,11 +35,11 @@ var Noteitem = React.createClass({
 
         <div className="note">
           <div className="note__title">
-            <input autoFocus autoComplete="off" className="input input__title" type="text" name="title" ref="title" value={ this.props.note.title } onChange={ this._onFieldChange.bind(null, 'title') } />
+            <input autoFocus spellCheck="false" autoComplete="off" className="input input__title" type="text" name="title" ref="title" value={ this.props.note.title } onChange={ this._onFieldChange.bind(null, 'title') } />
           </div>
 
           <div className="note__description">
-            <textarea rows="10" className="input" type="text" name="description" ref="description" value={ this.props.note.description } onChange={ this._onFieldChange.bind(null, 'description') } />
+            <textarea rows="10" spellCheck="false" className="input" type="text" name="description" ref="description" value={ this.props.note.description } onChange={ this._onFieldChange.bind(null, 'description') } />
           </div>
         </div>
       </div>
