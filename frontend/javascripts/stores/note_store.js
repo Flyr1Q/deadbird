@@ -22,6 +22,7 @@ function _addNote() {
     id: id,
     title: '',
     description: '',
+    isChanged: true,
     createdAt: new Date()
   };
 
@@ -87,6 +88,7 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
 
     case ActionTypes.RECEIVE_UPDATED_NOTE:
       if (action.data) {
+        action.data.isChanged = false;
         _notes[action.data.id] = action.data;
       }
 
@@ -95,6 +97,7 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
 
     case ActionTypes.CHANGE_NOTE:
       if(action.data) {
+        action.data.isChanged = true;
         _notes[action.data.id] = action.data;
       }
 
