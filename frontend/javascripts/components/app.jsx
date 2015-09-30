@@ -46,6 +46,10 @@ var App = React.createClass({
     NoteActionCreators.updateNote(note);
   },
 
+  _onDelete: function(id) {
+    NoteActionCreators.deleteNote(id);
+  },
+
   render: function() {
     return (
       <div>
@@ -56,7 +60,7 @@ var App = React.createClass({
         </sidebar>
 
         <main className="main">
-          { this.state.note ? <NoteItem note={this.state.note} onFieldChange={ this._onFieldChange } onSave={ this._onSave }/> : <div></div> }
+          { this.state.note ? <NoteItem note={this.state.note} onFieldChange={ this._onFieldChange } onSave={ this._onSave } onDelete={ this._onDelete }/> : <div></div> }
         </main>
       </div>
     );

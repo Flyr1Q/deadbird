@@ -21,6 +21,10 @@ function _addNote() {
   _activeId = id;
 }
 
+function _lastNoteId() {
+  return sample(_notes) && sample(_notes).id;
+}
+
 var NoteStore = assign({}, EventEmitter.prototype, {
   emitChange: function() {
     this.emit(CHANGE_EVENT);
@@ -39,7 +43,7 @@ var NoteStore = assign({}, EventEmitter.prototype, {
   },
 
   getNote: function(id) {
-    _activeId = id || _activeId;
+    _activeId = id || _activeId || _lastNoteId();
 
     return _notes[_activeId];
   },
@@ -63,8 +67,6 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
 
       if (isEmpty(_notes)) {
         _addNote();
-      } else {
-        _activeId = sample(_notes).id;
       }
 
       NoteStore.emitChange();
@@ -94,7 +96,8 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
 
     case ActionTypes.RECEIVE_DELETED_NOTE:
       if (action.id) {
-        _notes[action.id] = undefined;
+        delete _notes[action.id];
+        _activeId = null;
       }
 
       NoteStore.emitChange();
