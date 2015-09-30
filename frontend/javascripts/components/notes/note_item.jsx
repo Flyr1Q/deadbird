@@ -35,7 +35,7 @@ var Noteitem = React.createClass({
 
         <div className="note">
           <div className="note__title">
-            <input autoFocus autoComplete="off" className="input" type="text" name="title" ref="title" value={ this.props.note.title } onChange={ this._onFieldChange.bind(null, 'title') } />
+            <input autoFocus autoComplete="off" className="input input__title" type="text" name="title" ref="title" value={ this.props.note.title } onChange={ this._onFieldChange.bind(null, 'title') } />
           </div>
 
           <div className="note__description">
