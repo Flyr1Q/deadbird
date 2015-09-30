@@ -1,6 +1,6 @@
 import assign from 'object-assign';
 import { EventEmitter } from 'events';
-import { sample, isEmpty } from 'lodash';
+import { isEmpty, values, sortBy, first, chain, value } from 'lodash';
 import uuid from 'node-uuid';
 
 import Dispatcher from '../dispatcher/dispatcher.js';
@@ -17,12 +17,25 @@ var _note = {
 
 function _addNote() {
   let id = uuid();
-  _notes[id] = { id: id, title: '', description: '' };
+
+  _notes[id] = {
+    id: id,
+    title: '',
+    description: '',
+    createdAt: new Date()
+  };
+
   _activeId = id;
 }
 
 function _lastNoteId() {
-  return sample(_notes) && sample(_notes).id;
+  let _sorted = _sortedNotes();
+
+  return first(_sorted) && first(_sorted).id;
+}
+
+function _sortedNotes() {
+  return chain(_notes).values().sortBy('createdAt').value().reverse();
 }
 
 var NoteStore = assign({}, EventEmitter.prototype, {
@@ -39,7 +52,7 @@ var NoteStore = assign({}, EventEmitter.prototype, {
   },
 
   getAllNotes: function() {
-    return _notes;
+    return _sortedNotes();
   },
 
   getNote: function(id) {
