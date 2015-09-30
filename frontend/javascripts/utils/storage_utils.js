@@ -9,6 +9,8 @@ export default {
   },
 
   updateNote: function(data) {
+    data.isChanged = false;
+
     db.update('note', data, function(note) {
       ServerActionCreators.receiveUpdatedNote(note, null);
     })

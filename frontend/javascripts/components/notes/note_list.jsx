@@ -1,5 +1,7 @@
-import React from 'react';
+import React from 'react/addons';
 import { map } from 'lodash';
+
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var NoteElement = React.createClass({
   _onClick: function(event) {
@@ -25,11 +27,13 @@ var NoteList = React.createClass({
 
     return (
       <div>
-        {
-          map(this.props.notes, function(note){
-            return <NoteElement note={note} key={note.id} onClick={ _props.onClick } isActive={ note.id === _props.activeId }/>
-          })
-        }
+        <ReactCSSTransitionGroup transitionName="note-list">
+          {
+            map(this.props.notes, function(note){
+              return <NoteElement note={note} key={note.id} onClick={ _props.onClick } isActive={ note.id === _props.activeId }/>
+            })
+          }
+        </ReactCSSTransitionGroup>
       </div>
     );
   }

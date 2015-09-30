@@ -88,7 +88,6 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
 
     case ActionTypes.RECEIVE_UPDATED_NOTE:
       if (action.data) {
-        action.data.isChanged = false;
         _notes[action.data.id] = action.data;
       }
 

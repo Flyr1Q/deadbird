@@ -1,0 +1,46 @@
+.note-list-enter
+  opacity: 1;
+  transform: translateX(-2000px);
+
+.note-list-enter.note-list-enter-active
+  animation-duration: .8s
+  animation-fill-mode: both
+  animation-name: bounceInLeft
+
+.note-list-leave
+  opacity: 1;
+
+.note-list-leave.note-list-leave-active
+  animation-duration: .8s
+  animation-fill-mode: both
+  animation-name: bounceInRight
+
+@keyframes bounceInLeft
+  0%
+    opacity: 0;
+    transform: translateX(-2000px);
+
+  60%
+    opacity: 1;
+    transform: translateX(30px);
+
+  80%
+    transform: translateX(-10px);
+
+  100%
+    transform: translateX(0);
+
+@keyframes bounceInRight
+  0%
+    transform: translateX(0);
+
+  20%
+    transform: translateX(-10px);
+
+  40%
+    opacity: 1;
+    transform: translateX(30px);
+
+  100%
+    opacity: 0;
+    transform: translateX(-2000px);
