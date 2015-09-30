@@ -15,6 +15,12 @@ var _note = {
   id: ""
 };
 
+function _addNote() {
+  let id = uuid();
+  _notes[id] = { id: id, title: '', description: '' };
+  _activeId = id;
+}
+
 var NoteStore = assign({}, EventEmitter.prototype, {
   emitChange: function() {
     this.emit(CHANGE_EVENT);
@@ -33,7 +39,7 @@ var NoteStore = assign({}, EventEmitter.prototype, {
   },
 
   getNote: function(id) {
-    _activeId = id || _activeId
+    _activeId = id || _activeId;
 
     return _notes[_activeId];
   },
@@ -56,13 +62,10 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
       _notes = action.data;
 
       if (isEmpty(_notes)) {
-        _note = { id: uuid() };
-        _notes[_note.id] = _note;
+        _addNote();
       } else {
-        _note = sample(_notes);
+        _activeId = sample(_notes).id;
       }
-
-      _activeId = _note.id;
 
       NoteStore.emitChange();
       break;
@@ -79,6 +82,12 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
       if(action.data) {
         _notes[action.data.id] = action.data;
       }
+
+      NoteStore.emitChange();
+      break;
+
+    case ActionTypes.ADD_NOTE:
+      _addNote();
 
       NoteStore.emitChange();
       break;

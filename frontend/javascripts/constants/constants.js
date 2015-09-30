@@ -10,10 +10,12 @@ export default {
     // Routes
     REDIRECT: null,
 
-    // Startups
+    // Notes
     LOAD_NOTES: null,
     UPDATE_NOTE: null,
     DELETE_NOTE: null,
+    CHANGE_NOTE: null,
+    ADD_NOTE: null,
 
     RECEIVE_NOTES: null,
     RECEIVE_UPDATED_NOTE: null,

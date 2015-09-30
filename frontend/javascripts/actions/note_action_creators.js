@@ -5,6 +5,12 @@ import { ActionTypes } from '../constants/constants.js';
 import StorageUtils from '../utils/storage_utils.js';
 
 export default {
+  addNote: function() {
+    Dispatcher.handleViewAction({
+      type: ActionTypes.ADD_NOTE
+    });
+  },
+
   loadNotes: function() {
     Dispatcher.handleViewAction({
       type: ActionTypes.LOAD_NOTES
@@ -14,7 +20,7 @@ export default {
   },
 
   changeNote: function(data) {
-    Dispatcher.handleServerAction({
+    Dispatcher.handleViewAction({
       type: ActionTypes.CHANGE_NOTE,
       data: data
     });
