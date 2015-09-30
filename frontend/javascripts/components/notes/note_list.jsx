@@ -15,7 +15,7 @@ var NoteElement = React.createClass({
     return (
       <a href='#' onClick={ this._onClick } className={ `note-el__link ${ this.props.isActive ? 'note-el__link--active' : '' }` }>
         <div className="note-el__title">{ this.props.note.title || 'Untitled' }</div>
-        { this.props.note.isChanged ? <span className='note-el__label'>o</span> : '' }
+        { this.props.note.isChanged ? <span className='note-el__label'>{ String.fromCharCode(8226) }</span> : '' }
       </a>
     );
   }
