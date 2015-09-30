@@ -33,12 +33,9 @@ var NoteStore = assign({}, EventEmitter.prototype, {
   },
 
   getNote: function(id) {
-    if (id) {
-      _note = _notes[id];
-      _activeId = id;
-    }
+    _activeId = id || _activeId
 
-    return _note;
+    return _notes[_activeId];
   },
 
   getErrors: function() {
