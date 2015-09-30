@@ -12,7 +12,9 @@ var Header = React.createClass({
       <header className="header">
         <div className="header__logo">Colubrine</div>
 
-        <button className="manage-block__button" onClick={ this._addNote }>+</button>
+        <div className="header__button-block">
+          <button className="header__button" onClick={ this._addNote }>+</button>
+        </div>
       </header>
     );
   }
