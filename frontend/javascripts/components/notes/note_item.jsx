@@ -29,7 +29,6 @@ var Noteitem = React.createClass({
       <div>
         <div className="manage-block">
           <button className="manage-block__button" onClick={ this._onSave }>Save</button>
-          <button disabled className="manage-block__button manage-block__button--disabled">Sync</button>
           <button className="manage-block__button manage-block__button--danger" onClick={ this._onDelete }>Delete</button>
         </div>
 

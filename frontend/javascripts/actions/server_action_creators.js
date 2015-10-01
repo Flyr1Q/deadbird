@@ -22,5 +22,12 @@ export default {
       type: ActionTypes.RECEIVE_DELETED_NOTE,
       id: id
     });
+  },
+
+  receiveSyncedOutStatus: function(result) {
+    Dispatcher.handleServerAction({
+      type: ActionTypes.RECEIVE_SYNCED_STATUS,
+      result: result
+    });
   }
 }

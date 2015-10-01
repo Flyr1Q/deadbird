@@ -63,6 +63,31 @@ export default {
     cursorRequest.onerror = onerror;
   },
 
+  bulkUpdate: function(tableName, data, callback) {
+    var db = datastore;
+    var transaction = db.transaction([tableName], 'readwrite');
+    var objStore = transaction.objectStore(tableName);
+
+    var request = objStore.clear();
+
+    request.onsuccess = function(e) {
+      let counter = 0;
+
+      putNext();
+
+      function putNext() {
+        if (counter < data.length) {
+          objStore.put(data[counter]).onsuccess = putNext;
+          counter++;
+        } else {
+          callback();
+        }
+      }
+    };
+
+    request.onerror = onerror;
+  },
+
   update: function(tableName, data, callback) {
     var db = datastore;
     var transaction = db.transaction([tableName], 'readwrite');
