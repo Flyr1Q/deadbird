@@ -33,7 +33,7 @@ export default {
     _sync(function(fileEntry) {
       fileEntry.createWriter(function(fileWriter) {
         fileWriter.onwriteend = function(e) {
-          ServerActionCreators.receiveSyncedOutStatus(true);
+          ServerActionCreators.receiveSyncedStatus(true);
         };
 
         fileWriter.onerror = _onError;

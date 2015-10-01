@@ -102,10 +102,11 @@ var webpackConfig = {
       }
     ]
   },
+  plugins: [],
   stats: {
     colors: true
   },
-  devtool: 'source-map'
+  devtool: 'sourcemap'
 }
 
 gulp.task("build-dev", ["webpack:build-dev"], function() {

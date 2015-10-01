@@ -24,7 +24,7 @@ export default {
     });
   },
 
-  receiveSyncedOutStatus: function(result) {
+  receiveSyncedStatus: function(result) {
     Dispatcher.handleServerAction({
       type: ActionTypes.RECEIVE_SYNCED_STATUS,
       result: result
