@@ -21,7 +21,7 @@ var Noteitem = React.createClass({
   },
 
   _onDelete: function() {
-    this.props.onDelete(this.props.note.id);
+    this.props.onDelete(this.props.note);
   },
 
   render: function() {

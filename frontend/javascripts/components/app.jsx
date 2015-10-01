@@ -46,8 +46,8 @@ var App = React.createClass({
     NoteActionCreators.updateNote(note);
   },
 
-  _onDelete: function(id) {
-    NoteActionCreators.deleteNote(id);
+  _onDelete: function(note) {
+    NoteActionCreators.deleteNote(note);
   },
 
   render: function() {

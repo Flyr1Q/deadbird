@@ -1,6 +1,6 @@
 import assign from 'object-assign';
 import { EventEmitter } from 'events';
-import { isEmpty, values, sortBy, first, chain, value } from 'lodash';
+import { isEmpty, values, sortBy, first, chain, value, reject } from 'lodash';
 import uuid from 'node-uuid';
 
 import Dispatcher from '../dispatcher/dispatcher.js';
@@ -9,7 +9,7 @@ import { ActionTypes } from '../constants/constants.js';
 var CHANGE_EVENT = 'change';
 
 var _notes = {};
-var _onlySavedNotes = {};
+var _savedNotes = {};
 var _errors = [];
 var _activeId;
 var _note = {
@@ -24,6 +24,7 @@ function _addNote() {
     title: '',
     description: '',
     isChanged: true,
+    isDeleted: false,
     createdAt: new Date(),
     updatedAt: new Date()
   };
@@ -32,15 +33,28 @@ function _addNote() {
 }
 
 function _lastNoteId() {
-  let _sorted = _sortedNotes(_notes);
+  let _sorted = _sortedNotes();
 
   return first(_sorted) && first(_sorted).id;
 }
 
-function _sortedNotes(notes) {
-  return chain(notes).values().sortBy(function(el){
-    return new Date(el.createdAt);
-  }).value().reverse();
+function _sortedNotes() {
+  return chain(_notes).values()
+    .reject({ isDeleted: true })
+    .sortBy(function(el){
+      return new Date(el.createdAt);
+    })
+    .value()
+    .reverse();
+}
+
+function _onlySavedNotes() {
+  return chain(_savedNotes).values()
+    .sortBy(function(el){
+      return new Date(el.createdAt);
+    })
+    .value()
+    .reverse();
 }
 
 var NoteStore = assign({}, EventEmitter.prototype, {
@@ -57,11 +71,11 @@ var NoteStore = assign({}, EventEmitter.prototype, {
   },
 
   getAllNotes: function() {
-    return _sortedNotes(_notes);
+    return _sortedNotes();
   },
 
   getOnlySavedNotes: function() {
-    return _sortedNotes(_onlySavedNotes);
+    return _onlySavedNotes();
   },
 
   getNote: function(id) {
@@ -86,7 +100,7 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
 
     case ActionTypes.RECEIVE_NOTES:
       _notes = action.data;
-      _onlySavedNotes = action.data;
+      _savedNotes = action.data;
 
       if (isEmpty(_notes)) {
         _addNote();
@@ -98,7 +112,7 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
     case ActionTypes.RECEIVE_UPDATED_NOTE:
       if (action.data) {
         _notes[action.data.id] = action.data;
-        _onlySavedNotes[action.data.id] = action.data;
+        _savedNotes[action.data.id] = action.data;
       }
 
       NoteStore.emitChange();
@@ -121,8 +135,6 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
 
     case ActionTypes.RECEIVE_DELETED_NOTE:
       if (action.id) {
-        delete _notes[action.id];
-        delete _onlySavedNotes[action.id];
         _activeId = null;
       }
 

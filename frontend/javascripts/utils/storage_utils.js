@@ -18,9 +18,13 @@ export default {
     })
   },
 
-  deleteNote: function(id) {
-    db.destroy('note', id, function() {
-      ServerActionCreators.receiveDeletedNote(id);
+  deleteNote: function(data) {
+    data.isDeleted = true;
+    data.updatedAt = new Date();
+
+    db.update('note', data, function(note) {
+      ServerActionCreators.receiveUpdatedNote(note, null);
+      ServerActionCreators.receiveDeletedNote(data.id);
     })
   },
 

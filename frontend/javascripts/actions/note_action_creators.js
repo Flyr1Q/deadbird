@@ -37,13 +37,13 @@ export default {
     StorageUtils.updateNote(data);
   },
 
-  deleteNote: function(noteId) {
+  deleteNote: function(note) {
     Dispatcher.handleViewAction({
       type: ActionTypes.DELETE_NOTE,
-      noteId: noteId
+      note: note
     });
 
-    StorageUtils.deleteNote(noteId);
+    StorageUtils.deleteNote(note);
   },
 
   syncNotes: function() {
