@@ -17,8 +17,13 @@ var Header = React.createClass({
         <div className="header__logo">Colubrine</div>
 
         <div className="header__button-block">
-          <button className="header__button" onClick={ this._syncNotes }>-</button>
-          <button className="header__button" onClick={ this._addNote }>+</button>
+          <button className="header__button" onClick={ this._syncNotes }>
+            <i className="material-icons">sync</i>
+          </button>
+
+          <button className="header__button" onClick={ this._addNote }>
+            <i className="material-icons">add</i>
+          </button>
         </div>
       </header>
     );

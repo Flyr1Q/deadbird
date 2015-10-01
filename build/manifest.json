@@ -13,7 +13,7 @@
     "syncFileSystem"
   ],
   "icons": {
-    "16": "build/icon-16.png",
-    "128": "build/icon-128.png"
+    "16": "icon-16.png",
+    "128": "icon-128.png"
   }
 }

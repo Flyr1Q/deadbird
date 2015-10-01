@@ -38,7 +38,9 @@ function _lastNoteId() {
 }
 
 function _sortedNotes(notes) {
-  return chain(notes).values().sortBy('createdAt').value().reverse();
+  return chain(notes).values().sortBy(function(el){
+    return new Date(el.createdAt);
+  }).value().reverse();
 }
 
 var NoteStore = assign({}, EventEmitter.prototype, {

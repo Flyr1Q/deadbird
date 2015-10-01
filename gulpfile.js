@@ -27,7 +27,11 @@ var config = {
   },
   images: {
     src: "frontend/images/**",
-  }
+  },
+  bower_components: [
+    "./bower_components/normalize.css/normalize.css",
+    "./bower_components/material-design-icons/iconfont/*.ttf"
+  ]
 };
 
 var handleErrors = function() {
@@ -43,7 +47,7 @@ var handleErrors = function() {
 
 // ==================== TASKS =========================
 
-gulp.task('default', ['build-dev', 'images', 'sass', 'watch']);
+gulp.task('default', ['build-dev', 'images', 'sass', 'bower', 'watch']);
 
 gulp.task('build', function(callback) {
   var tasks = ['clean', ['images'], ['sass'], ['webpack:build']];
@@ -72,6 +76,11 @@ gulp.task('sass', function () {
     .pipe(gulp.dest(config.buildPath));
 });
 
+gulp.task('bower', function() {
+  return gulp.src(config.bower_components)
+    .pipe(gulp.dest(config.buildPath));
+})
+
 gulp.task('watch', function(callback) {
   watch(config.sass.src, function() { gulp.start('sass'); });
   watch(config.images.src, function() { gulp.start('images'); });
@@ -93,9 +102,6 @@ var webpackConfig = {
       }
     ]
   },
-  plugins: [
-    new webpack.NoErrorsPlugin()
-  ],
   stats: {
     colors: true
   },

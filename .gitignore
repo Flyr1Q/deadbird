@@ -1,5 +1,5 @@
 /node_modules
-/build/bower_components
-/build/*.js
-/build/*.js.map
-/build/*.css
+/bower_components
+/build/build.js
+/build/build.js.map
+/build/build.css
