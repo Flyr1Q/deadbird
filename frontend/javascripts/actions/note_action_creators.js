@@ -1,4 +1,5 @@
 import assign from 'object-assign';
+import { reject } from 'lodash';
 
 import Dispatcher from '../dispatcher/dispatcher.js';
 import { ActionTypes } from '../constants/constants.js';
@@ -6,7 +7,7 @@ import StorageUtils from '../utils/storage_utils.js';
 import CloudUtils from '../utils/cloud_utils.js';
 import NoteStore from '../stores/note_store.js';
 
-export default {
+var NoteActionCreators = {
   addNote: function() {
     Dispatcher.handleAction({
       type: ActionTypes.ADD_NOTE
@@ -33,9 +34,19 @@ export default {
   },
 
   receiveNotes: function(data) {
+    let _data = {};
+
+    if (data.length) {
+      data.forEach(function(el){
+        _data[el.id] = el;
+      })
+    } else {
+      _data = data;
+    }
+
     Dispatcher.handleAction({
       type: ActionTypes.RECEIVE_NOTES,
-      data: data
+      data: _data
     });
   },
 
@@ -59,7 +70,9 @@ export default {
       type: ActionTypes.SYNC_NOTES
     });
 
-    CloudUtils.syncIn();
+    CloudUtils.syncIn(function(cloudNotes) {
+      NoteActionCreators.diffNotes(cloudNotes);
+    });
   },
 
   diffNotes: function(cloudNotes) {
@@ -76,8 +89,13 @@ export default {
       }
     })
 
+    _final = reject(_final, { isDeleted: true });
+
     StorageUtils.bulkUpdate(_final);
-    CloudUtils.syncOut(_final);
+
+    CloudUtils.syncOut(_final, function() {
+      NoteActionCreators.receiveSyncedStatus(true)
+    });
   },
 
   receiveSyncedStatus: function(result) {
@@ -87,3 +105,5 @@ export default {
     });
   }
 };
+
+export default NoteActionCreators;

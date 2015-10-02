@@ -45,13 +45,13 @@ function _openFile(callback) {
 }
 
 export default {
-  syncIn: function() {
+  syncIn: function(callback) {
     _sync(function(fileEntry) {
       fileEntry.file(function(file) {
         var reader = new FileReader();
 
         reader.onloadend = function(e) {
-          NoteActionCreators.diffNotes(JSON.parse(e.target.result || '[]'));
+          callback(JSON.parse(e.target.result || '[]'));
         };
 
         reader.readAsText(file);
@@ -59,11 +59,11 @@ export default {
     })
   },
 
-  syncOut: function(notes) {
+  syncOut: function(notes, callback) {
     _sync(function(fileEntry) {
       fileEntry.createWriter(function(fileWriter) {
         fileWriter.onwriteend = function(e) {
-          NoteActionCreators.receiveSyncedStatus(true);
+          callback();
         };
 
         fileWriter.onerror = _onError;

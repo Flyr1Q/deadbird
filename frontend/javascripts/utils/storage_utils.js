@@ -1,6 +1,5 @@
 import NoteActionCreators from '../actions/note_action_creators.js';
 import db from './indexeddb_utils.js';
-import { values } from 'lodash';
 
 export default {
   loadNotes: function() {
@@ -28,7 +27,7 @@ export default {
   },
 
   bulkUpdate: function(data) {
-    db.bulkUpdate('note', values(data), function(){
+    db.bulkUpdate('note', data, function(){
       NoteActionCreators.receiveNotes(data);
     })
   }
