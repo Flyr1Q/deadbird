@@ -134,7 +134,9 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
       break;
 
     case ActionTypes.RECEIVE_DELETED_NOTE:
-      if (action.id) {
+      if (action.data) {
+        _notes[action.data.id] = action.data;
+        _savedNotes[action.data.id] = action.data;
         _activeId = null;
       }
 

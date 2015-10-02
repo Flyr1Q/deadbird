@@ -1,11 +1,6 @@
 import keyMirror from 'keymirror';
 
 export default {
-  PayloadSources: keyMirror({
-    SERVER_ACTION: null,
-    VIEW_ACTION: null
-  }),
-
   ActionTypes: keyMirror({
     // Routes
     REDIRECT: null,

@@ -1,0 +1,40 @@
+.notification
+  position: absolute
+  top: 0
+  width: 100%
+  font-family: 'ETBembo'
+  font-size: 20px
+  text-align: center
+  z-index: 1
+  padding: 15px 0
+
+  &--warning
+    background-color: #FEEFB3
+    color: #9F6000
+    border-bottom: 1px solid #A69C75
+
+  &--success
+    background-color: #DFF2BF
+    color: #4F8A10
+    border-bottom: 1px solid #B3C299
+
+  &--error
+    background-color: #FF1919
+    color: #fff
+
+.notification-enter
+  opacity: 1;
+  transform: translateX(-2000px);
+
+.notification-enter.notification-enter-active
+  animation-duration: .8s
+  animation-fill-mode: both
+  animation-name: bounceInLeft
+
+.notification-leave
+  opacity: 1;
+
+.notification-leave.notification-leave-active
+  animation-duration: .8s
+  animation-fill-mode: both
+  animation-name: bounceInRight

@@ -3,6 +3,7 @@ import React from 'react';
 import Header from './header.jsx';
 import NoteList from './notes/note_list.jsx';
 import NoteItem from './notes/note_item.jsx';
+import Notification from './notification.jsx';
 
 import NoteActionCreators from '../actions/note_action_creators.js';
 import NoteStore from '../stores/note_store.js';
@@ -53,6 +54,8 @@ var App = React.createClass({
   render: function() {
     return (
       <div>
+        <Notification/>
+
         <sidebar className="sidebar">
           <Header/>
 

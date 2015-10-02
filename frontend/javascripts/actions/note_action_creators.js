@@ -8,46 +8,54 @@ import NoteStore from '../stores/note_store.js';
 
 export default {
   addNote: function() {
-    Dispatcher.handleViewAction({
+    Dispatcher.handleAction({
       type: ActionTypes.ADD_NOTE
     });
   },
 
   loadNotes: function() {
-    Dispatcher.handleViewAction({
-      type: ActionTypes.LOAD_NOTES
-    });
-
     StorageUtils.loadNotes();
   },
 
   changeNote: function(data) {
-    Dispatcher.handleViewAction({
+    Dispatcher.handleAction({
       type: ActionTypes.CHANGE_NOTE,
       data: data
     });
   },
 
   updateNote: function(data) {
-    Dispatcher.handleViewAction({
-      type: ActionTypes.UPDATE_NOTE,
-      data: data
-    });
-
     StorageUtils.updateNote(data);
   },
 
   deleteNote: function(note) {
-    Dispatcher.handleViewAction({
-      type: ActionTypes.DELETE_NOTE,
-      note: note
-    });
-
     StorageUtils.deleteNote(note);
   },
 
+  receiveNotes: function(data) {
+    Dispatcher.handleAction({
+      type: ActionTypes.RECEIVE_NOTES,
+      data: data
+    });
+  },
+
+  receiveUpdatedNote: function(data, errors) {
+    Dispatcher.handleAction({
+      type: ActionTypes.RECEIVE_UPDATED_NOTE,
+      data: data,
+      errors: errors
+    });
+  },
+
+  receiveDeletedNote: function(data) {
+    Dispatcher.handleAction({
+      type: ActionTypes.RECEIVE_DELETED_NOTE,
+      data: data
+    });
+  },
+
   syncNotes: function() {
-    Dispatcher.handleViewAction({
+    Dispatcher.handleAction({
       type: ActionTypes.SYNC_NOTES
     });
 
@@ -70,5 +78,12 @@ export default {
 
     StorageUtils.bulkUpdate(_final);
     CloudUtils.syncOut(_final);
+  },
+
+  receiveSyncedStatus: function(result) {
+    Dispatcher.handleAction({
+      type: ActionTypes.RECEIVE_SYNCED_STATUS,
+      result: result
+    });
   }
 };

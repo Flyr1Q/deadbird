@@ -1,11 +1,11 @@
-import ServerActionCreators from '../actions/server_action_creators.js';
+import NoteActionCreators from '../actions/note_action_creators.js';
 import db from './indexeddb_utils.js';
 import { values } from 'lodash';
 
 export default {
   loadNotes: function() {
     db.index('note', function(notes) {
-      ServerActionCreators.receiveNotes(notes);
+      NoteActionCreators.receiveNotes(notes);
     })
   },
 
@@ -14,7 +14,7 @@ export default {
     data.updatedAt = new Date();
 
     db.update('note', data, function(note) {
-      ServerActionCreators.receiveUpdatedNote(note, null);
+      NoteActionCreators.receiveUpdatedNote(note, null);
     })
   },
 
@@ -23,14 +23,13 @@ export default {
     data.updatedAt = new Date();
 
     db.update('note', data, function(note) {
-      ServerActionCreators.receiveUpdatedNote(note, null);
-      ServerActionCreators.receiveDeletedNote(data.id);
+      NoteActionCreators.receiveDeletedNote(note, null);
     })
   },
 
   bulkUpdate: function(data) {
     db.bulkUpdate('note', values(data), function(){
-      ServerActionCreators.receiveNotes(data);
+      NoteActionCreators.receiveNotes(data);
     })
   }
 }
