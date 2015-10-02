@@ -1,6 +1,5 @@
 import NoteActionCreators from '../actions/note_action_creators.js';
 import NotificationActionCreators from '../actions/notification_action_creators.js';
-import { values } from 'lodash';
 
 let _statuses = chrome.syncFileSystem.ServiceStatus;
 
@@ -45,7 +44,7 @@ function _openFile(callback) {
 }
 
 export default {
-  syncIn: function(callback) {
+  syncIn(callback) {
     _sync(function(fileEntry) {
       fileEntry.file(function(file) {
         var reader = new FileReader();
@@ -59,7 +58,7 @@ export default {
     })
   },
 
-  syncOut: function(notes, callback) {
+  syncOut(data, callback) {
     _sync(function(fileEntry) {
       fileEntry.createWriter(function(fileWriter) {
         fileWriter.onwriteend = function(e) {
@@ -68,7 +67,7 @@ export default {
 
         fileWriter.onerror = _onError;
 
-        var blob = new Blob([JSON.stringify(values(notes))], {type: 'text/plain'});
+        var blob = new Blob([JSON.stringify(data)], {type: 'application/plain'});
 
         fileWriter.write(blob);
       }, _onError);

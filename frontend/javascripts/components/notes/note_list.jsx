@@ -4,14 +4,14 @@ import { map } from 'lodash';
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var NoteElement = React.createClass({
-  _onClick: function(event) {
+  _onClick(event) {
     event.stopPropagation();
     event.preventDefault();
 
     this.props.onClick(this.props.note.id);
   },
 
-  render: function() {
+  render() {
     return (
       <a href='#' onClick={ this._onClick } className={ `note-el__link ${ this.props.isActive ? 'note-el__link--active' : '' }` }>
         <div className="note-el__title">{ this.props.note.title || 'Untitled' }</div>
@@ -22,7 +22,7 @@ var NoteElement = React.createClass({
 });
 
 var NoteList = React.createClass({
-  render: function() {
+  render() {
     let _props = this.props;
 
     return (

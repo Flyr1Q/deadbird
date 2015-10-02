@@ -11,11 +11,11 @@ var Notification = React.createClass({
     };
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     NotificationStore.addChangeListener(this._onChange);
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate() {
     if (this.state.notification) {
       delay(function(_ctx){
         _ctx.setState({ notification: null });
@@ -23,17 +23,17 @@ var Notification = React.createClass({
     }
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     NotificationStore.removeChangeListener(this._onChange);
   },
 
-  _onChange: function() {
+  _onChange() {
     this.setState({
       notification: NotificationStore.getNotification()
     })
   },
 
-  render: function() {
+  render() {
     return (
       <ReactCSSTransitionGroup transitionName="notification">
         {

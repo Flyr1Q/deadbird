@@ -3,13 +3,13 @@ import copy from 'shallow-copy';
 import Textarea from 'react-textarea-autosize';
 
 var Noteitem = React.createClass({
-  componentDidUpdate: function(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.note.id !== prevProps.note.id) {
       React.findDOMNode(this.refs.title).focus();
     }
   },
 
-  _onFieldChange: function(field, event) {
+  _onFieldChange(field, event) {
     let dup = copy(this.props.note);
 
     dup[field] = event.target.value;
@@ -17,15 +17,15 @@ var Noteitem = React.createClass({
     this.props.onFieldChange(dup);
   },
 
-  _onSave: function() {
+  _onSave() {
     this.props.onSave(this.props.note);
   },
 
-  _onDelete: function() {
+  _onDelete() {
     this.props.onDelete(this.props.note);
   },
 
-  render: function() {
+  render() {
     return (
       <div>
         <div className="manage-block">

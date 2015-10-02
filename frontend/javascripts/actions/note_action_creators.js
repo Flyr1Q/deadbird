@@ -1,107 +1,65 @@
-import assign from 'object-assign';
-import { reject } from 'lodash';
+import { reject, values } from 'lodash';
 
 import Dispatcher from '../dispatcher/dispatcher.js';
 import { ActionTypes } from '../constants/constants.js';
 import StorageUtils from '../utils/storage_utils.js';
 import CloudUtils from '../utils/cloud_utils.js';
 import NoteStore from '../stores/note_store.js';
+import NoteUtils from '../utils/note_utils.js';
 
 var NoteActionCreators = {
-  addNote: function() {
-    Dispatcher.handleAction({
-      type: ActionTypes.ADD_NOTE
-    });
-  },
-
-  loadNotes: function() {
+  loadNotes() {
     StorageUtils.loadNotes();
   },
 
-  changeNote: function(data) {
-    Dispatcher.handleAction({
-      type: ActionTypes.CHANGE_NOTE,
-      data: data
-    });
+  updateNote(note) {
+    StorageUtils.updateNote(note);
   },
 
-  updateNote: function(data) {
-    StorageUtils.updateNote(data);
-  },
-
-  deleteNote: function(note) {
+  deleteNote(note) {
     StorageUtils.deleteNote(note);
   },
 
-  receiveNotes: function(data) {
-    let _data = {};
-
-    if (data.length) {
-      data.forEach(function(el){
-        _data[el.id] = el;
-      })
-    } else {
-      _data = data;
-    }
-
+  receiveNotes(notes) {
     Dispatcher.handleAction({
       type: ActionTypes.RECEIVE_NOTES,
-      data: _data
+      notes: notes
     });
   },
 
-  receiveUpdatedNote: function(data, errors) {
+  receiveUpdatedNote(note) {
     Dispatcher.handleAction({
       type: ActionTypes.RECEIVE_UPDATED_NOTE,
-      data: data,
-      errors: errors
+      note: note
     });
   },
 
-  receiveDeletedNote: function(data) {
+  receiveDeletedNote(note) {
     Dispatcher.handleAction({
       type: ActionTypes.RECEIVE_DELETED_NOTE,
-      data: data
+      note: note
     });
   },
 
-  syncNotes: function() {
+  syncNotes() {
     Dispatcher.handleAction({
       type: ActionTypes.SYNC_NOTES
     });
 
-    CloudUtils.syncIn(function(cloudNotes) {
-      NoteActionCreators.diffNotes(cloudNotes);
-    });
+    CloudUtils.syncIn(NoteActionCreators.receiveSyncedNotes);
   },
 
-  diffNotes: function(cloudNotes) {
-    let localNotes = NoteStore.getOnlySavedNotes();
-    let _final = {};
+  receiveSyncedNotes(cloudNotes) {
+    let result = NoteUtils.merge(NoteStore.getPersistedNotes(), cloudNotes);
 
-    localNotes.forEach(function(_local){
-      _final[_local.id] = _local;
-    })
+    StorageUtils.bulkUpdate(result);
 
-    cloudNotes.forEach(function(_cloud){
-      if(!_final[_cloud.id] || (_final[_cloud.id].updatedAt < new Date(_cloud.updatedAt))) {
-        _final[_cloud.id] = _cloud;
-      }
-    })
-
-    _final = reject(_final, { isDeleted: true });
-
-    StorageUtils.bulkUpdate(_final);
-
-    CloudUtils.syncOut(_final, function() {
-      NoteActionCreators.receiveSyncedStatus(true)
-    });
+    CloudUtils.syncOut(result, NoteActionCreators.receiveSyncedStatus);
   },
 
-  receiveSyncedStatus: function(result) {
+  receiveSyncedStatus() {
     Dispatcher.handleAction({
-      type: ActionTypes.RECEIVE_SYNCED_STATUS,
-      result: result
+      type: ActionTypes.RECEIVE_SYNCED_STATUS
     });
   }
 };

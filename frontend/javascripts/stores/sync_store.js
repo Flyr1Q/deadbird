@@ -9,19 +9,19 @@ var CHANGE_EVENT = 'change';
 var _synchronizing = false;
 
 var SyncStore = assign({}, EventEmitter.prototype, {
-  emitChange: function() {
+  emitChange() {
     this.emit(CHANGE_EVENT);
   },
 
-  addChangeListener: function(callback) {
+  addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback) {
+  removeChangeListener(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  isSynchronizing: function() {
+  isSynchronizing() {
     return _synchronizing;
   }
 });

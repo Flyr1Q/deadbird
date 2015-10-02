@@ -7,57 +7,77 @@ import Notification from './notification.jsx';
 
 import NoteActionCreators from '../actions/note_action_creators.js';
 import NoteStore from '../stores/note_store.js';
+import NoteUtils from '../utils/note_utils.js';
 
 var App = React.createClass({
-  getInitialState: function() {
+  getInitialState() {
     return {
       notes: NoteStore.getAllNotes(),
       note: NoteStore.getNote()
     };
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     NoteStore.addChangeListener(this._onChange);
     NoteActionCreators.loadNotes();
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     NoteStore.removeChangeListener(this._onChange);
   },
 
-  _onChange: function() {
+  _onChange() {
     this.setState({
       notes: NoteStore.getAllNotes(),
       note: NoteStore.getNote()
     });
   },
 
-  _onClick: function(noteId) {
+  _onClick(noteId) {
     this.setState({
       notes: NoteStore.getAllNotes(),
       note: NoteStore.getNote(noteId)
     });
   },
 
-  _onFieldChange: function(note) {
-    NoteActionCreators.changeNote(note);
-  },
-
-  _onSave: function(note) {
+  _onSave(note) {
     NoteActionCreators.updateNote(note);
   },
 
-  _onDelete: function(note) {
+  _onDelete(note) {
     NoteActionCreators.deleteNote(note);
   },
 
-  render: function() {
+  _onFieldChange(note) {
+    let notes = this.state.notes;
+
+    note.isChanged = true;
+    NoteUtils.set(notes, note);
+
+    this.setState({
+      notes: notes,
+      note: note
+    })
+  },
+
+  _addNote() {
+    let notes = this.state.notes;
+    let note = NoteUtils.newNote();
+    notes.unshift(note);
+
+    this.setState({
+      notes: notes,
+      note: note
+    })
+  },
+
+  render() {
     return (
       <div>
         <Notification/>
 
         <sidebar className="sidebar">
-          <Header/>
+          <Header addNote={ this._addNote }/>
 
           <NoteList notes={this.state.notes} onClick={ this._onClick } activeId={ this.state.note ? this.state.note.id : null }/>
         </sidebar>

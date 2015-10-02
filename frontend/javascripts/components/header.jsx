@@ -10,15 +10,15 @@ var Header = React.createClass({
     };
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     SyncStore.addChangeListener(this._onChange);
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     SyncStore.removeChangeListener(this._onChange);
   },
 
-  _onChange: function() {
+  _onChange() {
     let _self = this;
 
     if (SyncStore.isSynchronizing()) {
@@ -34,15 +34,15 @@ var Header = React.createClass({
     }
   },
 
-  _addNote: function() {
-    NoteActionCreators.addNote();
+  _addNote() {
+    this.props.addNote()
   },
 
-  _syncNotes: function() {
+  _syncNotes() {
     NoteActionCreators.syncNotes();
   },
 
-  render: function() {
+  render() {
     return (
       <header className="header">
         <div className="header__logo">Colubrine</div>

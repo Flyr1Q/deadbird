@@ -9,19 +9,19 @@ var CHANGE_EVENT = 'change';
 var _notification;
 
 var NotificationStore = assign({}, EventEmitter.prototype, {
-  emitChange: function() {
+  emitChange() {
     this.emit(CHANGE_EVENT);
   },
 
-  addChangeListener: function(callback) {
+  addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback) {
+  removeChangeListener(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getNotification: function() {
+  getNotification() {
     return _notification;
   }
 });

@@ -5,7 +5,7 @@ function onerror(e) {
 }
 
 export default {
-  open: function(tableName, callback) {
+  open(tableName, callback) {
     var version = 1;
     var request = indexedDB.open('colubrine', version);
 
@@ -34,7 +34,7 @@ export default {
     request.onerror = onerror;
   },
 
-  index: function(tableName, callback) {
+  index(tableName, callback) {
     var db = datastore;
     var transaction = db.transaction([tableName], 'readwrite');
     var objStore = transaction.objectStore(tableName);
@@ -42,7 +42,7 @@ export default {
     var keyRange = IDBKeyRange.lowerBound(0);
     var cursorRequest = objStore.openCursor(keyRange);
 
-    var _instances = {};
+    var _instances = [];
 
     transaction.oncomplete = function(e) {
       callback(_instances);
@@ -55,7 +55,7 @@ export default {
         return;
       }
 
-      _instances[result.value.id] = result.value
+      _instances.push(result.value)
 
       result.continue();
     };
@@ -63,7 +63,7 @@ export default {
     cursorRequest.onerror = onerror;
   },
 
-  bulkUpdate: function(tableName, data, callback) {
+  bulkUpdate(tableName, data, callback) {
     var db = datastore;
     var transaction = db.transaction([tableName], 'readwrite');
     var objStore = transaction.objectStore(tableName);
@@ -88,7 +88,7 @@ export default {
     request.onerror = onerror;
   },
 
-  update: function(tableName, data, callback) {
+  update(tableName, data, callback) {
     var db = datastore;
     var transaction = db.transaction([tableName], 'readwrite');
     var objStore = transaction.objectStore(tableName);
@@ -104,7 +104,7 @@ export default {
     request.onerror = onerror;
   },
 
-  destroy: function(tableName, id, callback) {
+  destroy(tableName, id, callback) {
     var db = datastore;
     var transaction = db.transaction([tableName], 'readwrite');
     var objStore = transaction.objectStore(tableName);

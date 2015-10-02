@@ -1,94 +1,52 @@
 import assign from 'object-assign';
 import { EventEmitter } from 'events';
-import { isEmpty, values, sortBy, first, chain, value, reject } from 'lodash';
-import uuid from 'node-uuid';
+import { isEmpty, reject } from 'lodash';
 
 import Dispatcher from '../dispatcher/dispatcher.js';
 import { ActionTypes } from '../constants/constants.js';
+import utils from '../utils/note_utils.js';
 
 var CHANGE_EVENT = 'change';
 
-var _notesMap = {};
-var _savedNotesMap = {};
+var _notes = [];
 var _errors = [];
 var _activeId;
 var _note = {
   id: ""
 };
 
-function _addNote() {
-  let id = uuid();
-
-  _notesMap[id] = {
-    id: id,
-    title: '',
-    description: '',
-    isChanged: true,
-    isDeleted: false,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  };
-
-  _activeId = id;
-}
-
-function _lastNoteId() {
-  let _sorted = _sortedNotes();
-
-  return first(_sorted) && first(_sorted).id;
-}
-
-function _sortedNotes() {
-  return chain(_notesMap).values()
-    .reject({ isDeleted: true })
-    .sortBy(function(el){
-      return new Date(el.createdAt);
-    })
-    .value()
-    .reverse();
-}
-
-function _onlySavedNotes() {
-  return chain(_savedNotesMap).values()
-    .sortBy(function(el){
-      return new Date(el.createdAt);
-    })
-    .value()
-    .reverse();
-}
-
 var NoteStore = assign({}, EventEmitter.prototype, {
-  emitChange: function() {
+  emitChange() {
     this.emit(CHANGE_EVENT);
   },
 
-  addChangeListener: function(callback) {
+  addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback) {
+  removeChangeListener(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  getAllNotes: function() {
-    return _sortedNotes();
+  getAllNotes() {
+    return reject(utils.sort(_notes), { isDeleted: true });
   },
 
-  getOnlySavedNotes: function() {
-    return _onlySavedNotes();
+  getPersistedNotes() {
+    return utils.sort(_notes);
   },
 
-  getNote: function(id) {
-    _activeId = id || _activeId || _lastNoteId();
+  getNote(id) {
+    _activeId = id || _activeId || utils.lastNoteId(this.getAllNotes());
 
-    return _notesMap[_activeId];
+    return utils.findById(_notes, _activeId);
   },
 
-  getErrors: function() {
+  getErrors() {
     return _errors;
   },
 
-  getActiveId: function() {
+  getActiveId() {
     return _activeId;
   }
 });
@@ -97,46 +55,31 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
   var action = payload.action;
 
   switch(action.type) {
-
     case ActionTypes.RECEIVE_NOTES:
-      _notesMap = action.data;
-      _savedNotesMap = action.data;
+      _notes = action.notes;
 
-      if (isEmpty(_notesMap)) {
-        _addNote();
+      if (isEmpty(_notes)) {
+        let note = utils.newNote();
+
+        _notes.push(note);
+        _activeId = note.id;
       }
 
       NoteStore.emitChange();
       break;
 
     case ActionTypes.RECEIVE_UPDATED_NOTE:
-      if (action.data) {
-        _notesMap[action.data.id] = action.data;
-        _savedNotesMap[action.data.id] = action.data;
+      if (action.note) {
+        utils.set(_notes, action.note);
       }
-
-      NoteStore.emitChange();
-      break;
-
-    case ActionTypes.CHANGE_NOTE:
-      if(action.data) {
-        action.data.isChanged = true;
-        _notesMap[action.data.id] = action.data;
-      }
-
-      NoteStore.emitChange();
-      break;
-
-    case ActionTypes.ADD_NOTE:
-      _addNote();
 
       NoteStore.emitChange();
       break;
 
     case ActionTypes.RECEIVE_DELETED_NOTE:
-      if (action.data) {
-        _notesMap[action.data.id] = action.data;
-        _savedNotesMap[action.data.id] = action.data;
+      if (action.note) {
+        action.note.isDeleted = true;
+        utils.set(_notes, action.note);
         _activeId = null;
       }
 
