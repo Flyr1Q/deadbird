@@ -1,5 +1,6 @@
 import React from 'react';
 import copy from 'shallow-copy';
+import Textarea from 'react-textarea-autosize';
 
 var Noteitem = React.createClass({
   componentDidUpdate: function(prevProps, prevState) {
@@ -38,7 +39,7 @@ var Noteitem = React.createClass({
           </div>
 
           <div className="note__description">
-            <textarea rows="10" spellCheck="false" className="input" type="text" name="description" ref="description" value={ this.props.note.description } onChange={ this._onFieldChange.bind(null, 'description') } />
+            <Textarea spellCheck="false" className="input input__description" type="text" name="description"  value={ this.props.note.description } onChange={ this._onFieldChange.bind(null, 'description') }></Textarea>
           </div>
         </div>
       </div>
