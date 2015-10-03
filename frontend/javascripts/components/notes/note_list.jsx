@@ -26,7 +26,7 @@ var NoteList = React.createClass({
     let _props = this.props;
 
     return (
-      <div>
+      <div className="note-list">
         <ReactCSSTransitionGroup transitionName="note-list">
           {
             map(this.props.notes, function(note){
