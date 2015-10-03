@@ -7,7 +7,7 @@ function onerror(e) {
 export default {
   open(tableName, callback) {
     var version = 1;
-    var request = indexedDB.open('colubrine', version);
+    var request = indexedDB.open('colibri', version);
 
     request.onupgradeneeded = function(e) {
       var db = e.target.result;

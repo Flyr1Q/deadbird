@@ -41,7 +41,7 @@ function _sync(callback) {
 
 function _openFile(callback) {
   chrome.syncFileSystem.requestFileSystem(function(fs) {
-    fs.root.getFile('colubrine_notes.json', { create: true }, function(fileEntry) {
+    fs.root.getFile('colibri_notes.json', { create: true }, function(fileEntry) {
       callback(fileEntry);
     }, _onError);
   });
