@@ -6,7 +6,7 @@ import NotificationStore from '../stores/notification_store.js';
 
 export default {
   addNotification(status, message) {
-    Dispatcher.handleViewAction({
+    Dispatcher.handleAction({
       type: ActionTypes.RECEIVE_NOTIFICATION,
       status: status,
       message: message

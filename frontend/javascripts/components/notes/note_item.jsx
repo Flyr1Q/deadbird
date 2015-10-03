@@ -39,7 +39,7 @@ var Noteitem = React.createClass({
           </div>
 
           <div className="note__description">
-            <Textarea spellCheck="false" className="input input__description" type="text" name="description"  value={ this.props.note.description } onChange={ this._onFieldChange.bind(null, 'description') }></Textarea>
+            <Textarea minRows={10} spellCheck="false" className="input input__description" type="text" name="description" value={ this.props.note.description } onChange={ this._onFieldChange.bind(null, 'description') }></Textarea>
           </div>
         </div>
       </div>
