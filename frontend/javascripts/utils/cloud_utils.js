@@ -14,14 +14,17 @@ function _sync(callback) {
     switch (status) {
       case _statuses.INITIALIZING:
         _warn('Google Drive is not answering, try again');
+        NoteActionCreators.receiveSyncedStatus();
         break;
 
       case _statuses.AUTHENTICATION_REQUIRED:
         _warn('You are not authorized to Google Drive, please sign to it');
+        NoteActionCreators.receiveSyncedStatus();
         break;
 
       case _statuses.TEMPORARY_UNAVAILABLE:
         _warn('Google Drive is unavailable at the moment, sync later please');
+        NoteActionCreators.receiveSyncedStatus();
         break;
 
       case _statuses.RUNNING:
@@ -30,6 +33,7 @@ function _sync(callback) {
 
       case _statuses.DISABLED:
         _warn('Your Google Drive account is disabled, check it please');
+        NoteActionCreators.receiveSyncedStatus();
         break;
     }
   })
@@ -44,13 +48,13 @@ function _openFile(callback) {
 }
 
 export default {
-  syncIn(callback) {
+  syncIn() {
     _sync(function(fileEntry) {
       fileEntry.file(function(file) {
         var reader = new FileReader();
 
         reader.onloadend = function(e) {
-          callback(JSON.parse(e.target.result || '[]'));
+          NoteActionCreators.receiveSyncedNotes(JSON.parse(e.target.result || '[]'));
         };
 
         reader.readAsText(file);
@@ -58,11 +62,11 @@ export default {
     })
   },
 
-  syncOut(data, callback) {
+  syncOut(data) {
     _sync(function(fileEntry) {
       fileEntry.createWriter(function(fileWriter) {
         fileWriter.onwriteend = function(e) {
-          callback();
+          NoteActionCreators.receiveSyncedStatus();
         };
 
         fileWriter.onerror = _onError;

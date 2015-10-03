@@ -9,12 +9,15 @@ import NoteActionCreators from '../actions/note_action_creators.js';
 import NoteStore from '../stores/note_store.js';
 import NoteUtils from '../utils/note_utils.js';
 
+let _activeId;
+
 var App = React.createClass({
   getInitialState() {
-    return {
-      notes: NoteStore.getAllNotes(),
-      note: NoteStore.getNote()
-    };
+    let notes = NoteStore.getAllNotes();
+    _activeId = NoteUtils.lastNoteId(notes);
+    let note = NoteUtils.findById(notes, _activeId);
+
+    return { notes: notes, note: note };
   },
 
   componentDidMount() {
@@ -27,17 +30,17 @@ var App = React.createClass({
   },
 
   _onChange() {
-    this.setState({
-      notes: NoteStore.getAllNotes(),
-      note: NoteStore.getNote()
-    });
+    let notes = NoteStore.getAllNotes();
+    let note = NoteUtils.findById(notes, _activeId || NoteUtils.lastNoteId(notes));
+
+    this.setState({ notes: notes, note: note });
   },
 
   _onClick(noteId) {
-    this.setState({
-      notes: NoteStore.getAllNotes(),
-      note: NoteStore.getNote(noteId)
-    });
+    let notes = this.state.notes;
+    let note = NoteUtils.findById(notes, noteId);
+
+    this.setState({ notes: notes, note: note });
   },
 
   _onSave(note) {
@@ -45,6 +48,7 @@ var App = React.createClass({
   },
 
   _onDelete(note) {
+    _activeId = null;
     NoteActionCreators.deleteNote(note);
   },
 
@@ -52,23 +56,19 @@ var App = React.createClass({
     let notes = this.state.notes;
 
     note.isChanged = true;
-    NoteUtils.set(notes, note);
+    NoteUtils.replace(notes, note);
 
-    this.setState({
-      notes: notes,
-      note: note
-    })
+    this.setState({ notes: notes, note: note })
   },
 
   _addNote() {
     let notes = this.state.notes;
+
     let note = NoteUtils.newNote();
+    _activeId = note.id;
     notes.unshift(note);
 
-    this.setState({
-      notes: notes,
-      note: note
-    })
+    this.setState({ notes: notes, note: note })
   },
 
   render() {

@@ -46,7 +46,7 @@ var NoteActionCreators = {
       type: ActionTypes.SYNC_NOTES
     });
 
-    CloudUtils.syncIn(NoteActionCreators.receiveSyncedNotes);
+    CloudUtils.syncIn();
   },
 
   receiveSyncedNotes(cloudNotes) {
@@ -54,7 +54,7 @@ var NoteActionCreators = {
 
     StorageUtils.bulkUpdate(result);
 
-    CloudUtils.syncOut(result, NoteActionCreators.receiveSyncedStatus);
+    CloudUtils.syncOut(result);
   },
 
   receiveSyncedStatus() {

@@ -9,11 +9,6 @@ import utils from '../utils/note_utils.js';
 var CHANGE_EVENT = 'change';
 
 var _notes = [];
-var _errors = [];
-var _activeId;
-var _note = {
-  id: ""
-};
 
 var NoteStore = assign({}, EventEmitter.prototype, {
   emitChange() {
@@ -36,18 +31,8 @@ var NoteStore = assign({}, EventEmitter.prototype, {
     return utils.sort(_notes);
   },
 
-  getNote(id) {
-    _activeId = id || _activeId || utils.lastNoteId(this.getAllNotes());
-
-    return utils.findById(_notes, _activeId);
-  },
-
   getErrors() {
     return _errors;
-  },
-
-  getActiveId() {
-    return _activeId;
   }
 });
 
@@ -62,7 +47,6 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
         let note = utils.newNote();
 
         _notes.push(note);
-        _activeId = note.id;
       }
 
       NoteStore.emitChange();
@@ -70,7 +54,7 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
 
     case ActionTypes.RECEIVE_UPDATED_NOTE:
       if (action.note) {
-        utils.set(_notes, action.note);
+        _notes.push(action.note);
       }
 
       NoteStore.emitChange();
@@ -79,8 +63,8 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
     case ActionTypes.RECEIVE_DELETED_NOTE:
       if (action.note) {
         action.note.isDeleted = true;
-        utils.set(_notes, action.note);
-        _activeId = null;
+
+        utils.replace(_notes, action.note);
       }
 
       NoteStore.emitChange();

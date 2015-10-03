@@ -27,7 +27,7 @@ let findById = function(notes, id) {
   return find(notes, 'id', id);
 }
 
-let set = function(notes, note) {
+let replace = function(notes, note) {
   let index = findIndex(notes, el => el.id == note.id);
 
   notes[index] = note;
@@ -62,7 +62,7 @@ export default  {
   newNote,
   lastNoteId,
   merge,
-  set,
+  replace,
   sort,
 }
 
