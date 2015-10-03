@@ -54,7 +54,7 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
 
     case ActionTypes.RECEIVE_UPDATED_NOTE:
       if (action.note) {
-        _notes.push(action.note);
+        utils.set(_notes, action.note);
       }
 
       NoteStore.emitChange();
@@ -64,7 +64,7 @@ NoteStore.dispatchToken = Dispatcher.register(function(payload) {
       if (action.note) {
         action.note.isDeleted = true;
 
-        utils.replace(_notes, action.note);
+        utils.set(_notes, action.note);
       }
 
       NoteStore.emitChange();

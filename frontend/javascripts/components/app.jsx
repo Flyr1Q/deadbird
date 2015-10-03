@@ -31,14 +31,16 @@ var App = React.createClass({
 
   _onChange() {
     let notes = NoteStore.getAllNotes();
-    let note = NoteUtils.findById(notes, _activeId || NoteUtils.lastNoteId(notes));
+    _activeId = _activeId || NoteUtils.lastNoteId(notes)
+    let note = NoteUtils.findById(notes, _activeId);
 
     this.setState({ notes: notes, note: note });
   },
 
   _onClick(noteId) {
     let notes = this.state.notes;
-    let note = NoteUtils.findById(notes, noteId);
+    _activeId = noteId;
+    let note = NoteUtils.findById(notes, _activeId);
 
     this.setState({ notes: notes, note: note });
   },
@@ -56,7 +58,7 @@ var App = React.createClass({
     let notes = this.state.notes;
 
     note.isChanged = true;
-    NoteUtils.replace(notes, note);
+    NoteUtils.set(notes, note);
 
     this.setState({ notes: notes, note: note })
   },
