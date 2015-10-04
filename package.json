@@ -36,7 +36,6 @@
     "node-uuid": "^1.4.3",
     "object-assign": "^4.0.1",
     "react": "^0.13.3",
-    "react-textarea-autosize": "^2.5.3",
     "shallow-copy": "0.0.1"
   }
 }

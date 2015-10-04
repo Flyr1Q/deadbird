@@ -10,6 +10,28 @@
 
   &__description
     font-family: 'Monospace'
+    min-height: 500px
+    overflow-y: auto
+
+    &::-webkit-scrollbar
+      width: 8px;
+      background-color: rgba(0,0,0,0)
+      -webkit-border-radius: 100px
+
+    &::-webkit-scrollbar-thumb:vertical:hover
+      background-color: rgba(0, 0, 0, 0.4)
+
+    &::-webkit-scrollbar-thumb:vertical
+      background-clip: padding-box
+      background: rgba(0,0,0,0.2)
+      -webkit-border-radius: 999px
+
+    &::-webkit-scrollbar-thumb:vertical:active
+      background: rgba(0,0,0,0.4)
+      -webkit-border-radius: 999px
+
+    &::-webkit-scrollbar-corner
+      background: transparent
 
   &:active
     border: none
