@@ -1,5 +1,5 @@
 {
-  "name": "Colibri",
+  "name": "Deadbird",
   "description": "A simple app to save notes, really.",
   "version": "0.0.1",
   "manifest_version": 2,
@@ -13,7 +13,7 @@
     "syncFileSystem"
   ],
   "icons": {
-    "16": "icon-16.png",
-    "128": "icon-128.png"
+    "16": "16x16.png",
+    "128": "128x128.png"
   }
 }

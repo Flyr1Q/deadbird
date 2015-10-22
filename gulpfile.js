@@ -50,7 +50,7 @@ var handleErrors = function() {
 gulp.task('default', ['build-dev', 'images', 'sass', 'bower', 'watch']);
 
 gulp.task('build', function(callback) {
-  var tasks = ['clean', ['images'], ['sass'], ['webpack:build']];
+  var tasks = [['images'], ['sass'], ['webpack:build']];
 
   tasks.push(callback);
 

@@ -13,8 +13,7 @@ function _sync(callback) {
   chrome.syncFileSystem.getServiceStatus(function(status) {
     switch (status) {
       case _statuses.INITIALIZING:
-        _warn('Google Drive is not answering, try again');
-        NoteActionCreators.receiveSyncedStatus();
+        _openFile(callback);
         break;
 
       case _statuses.AUTHENTICATION_REQUIRED:
@@ -41,7 +40,7 @@ function _sync(callback) {
 
 function _openFile(callback) {
   chrome.syncFileSystem.requestFileSystem(function(fs) {
-    fs.root.getFile('colibri_notes.json', { create: true }, function(fileEntry) {
+    fs.root.getFile('deadbird_notes.json', { create: true }, function(fileEntry) {
       callback(fileEntry);
     }, _onError);
   });

@@ -45,7 +45,7 @@ var Header = React.createClass({
   render() {
     return (
       <header className="header">
-        <div className="header__logo">Colibri</div>
+        <div className="header__logo">deadbird</div>
 
         <div className="header__button-block">
           <button className={ `header__button ${ this.state.synchronizing ? 'header__button--rotating' : ''}`} onClick={ this._syncNotes }>
